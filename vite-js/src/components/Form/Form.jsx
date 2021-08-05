@@ -43,7 +43,6 @@ export const Form = ({setFormValues}) => {
             setFormValues((state) => [...state, {firstName, lastName, birthDate, country, agree}]);
             reset();
         }
-        console.log(firstName);
     }
 
     return (

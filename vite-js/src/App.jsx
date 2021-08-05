@@ -10,8 +10,13 @@ function App() {
   return (
     <div className="App">
       <Form setFormValues={setFormValues} />
+        <main>
+            {formValues.map((item, index) => {
+                return <Card item={item} key={index} />
+            })}
+        </main>
     </div>
-  )
+  );
 }
 
 export default App
