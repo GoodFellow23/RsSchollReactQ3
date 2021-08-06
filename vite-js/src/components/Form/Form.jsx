@@ -1,4 +1,7 @@
 import React, {useEffect, useState} from "react";
+import '../../css/From/from.css'
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export const Form = ({setFormValues}) => {
     const [firstName, setFirstName] = useState("");
@@ -7,10 +10,11 @@ export const Form = ({setFormValues}) => {
     const [country, setCountry] = useState("Russia");
     const [agree, setAgree] = useState(false);
     const [error, setError] = useState({});
+    const [switcher, setSwitcher] = useState(false);
 
     useEffect(() => {
         validate()
-    }, [agree, firstName, lastName, birthDate]);
+    }, [agree, firstName, lastName, birthDate, switcher]);
 
     const reset = () => {
         setFirstName("");
@@ -35,12 +39,15 @@ export const Form = ({setFormValues}) => {
         if(birthDate === "") {
             setError((state) => ({...state, birthDate}))
         }
+        if(switcher === false) {
+            setError((state) => ({...state, switcher}))
+        }
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if( Object.keys(error).length === 0) {
-            setFormValues((state) => [...state, {firstName, lastName, birthDate, country, agree}]);
+            setFormValues((state) => [...state, {firstName, lastName, birthDate, country, agree, switcher}]);
             reset();
         }
     }
@@ -48,7 +55,7 @@ export const Form = ({setFormValues}) => {
     return (
         <form className="form" onSubmit={handleSubmit}>
             <label className="item" htmlFor={firstName}>
-                <p>Name:{error?.firstName !== undefined && <span className="errors">Should be fill</span>}</p>
+                <p>Name:{error?.firstName !== undefined && <span className="errors"> Should be fill</span>}</p>
                 <input
                     type="text"
                     name={firstName}
@@ -56,7 +63,7 @@ export const Form = ({setFormValues}) => {
                     onChange={(event) => setFirstName(event.target.value)}/>
             </label>
             <label className="item" htmlFor={lastName}>
-                <p>Surname:{error?.lastName !== undefined && <span className="errors">Should be fill</span>}</p>
+                <p>Surname:{error?.lastName !== undefined && <span className="errors"> Should be fill</span>}</p>
                 <input
                     type="text"
                     name={lastName}
@@ -64,7 +71,7 @@ export const Form = ({setFormValues}) => {
                     onChange={(event) => setLastName(event.target.value)} />
             </label>
             <label className="item" htmlFor={birthDate}>
-                <p>Birth date:{error?.birthDate !== undefined && <span className="errors">Should be fill</span>}</p>
+                <p>Birth date:{error?.birthDate !== undefined && <span className="errors"> Should be fill</span>}</p>
                 <input
                     type="date"
                     name={birthDate}
@@ -89,6 +96,18 @@ export const Form = ({setFormValues}) => {
                        name="agree"
                        checked={agree}
                        onChange={() => setAgree(prev => !prev)} />
+            </label>
+            <label htmlFor="switcher">
+                <p>Send Mail: {error?.switcher !== undefined && <span className="errors">Should be check</span>}</p>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            color="primary"
+                            onChange={() => {setSwitcher(prev => !prev)}}
+                            name="switcher"
+                        />
+                    }
+                />
             </label>
             <div className="button">
                 <input type="submit" value="Send" />
