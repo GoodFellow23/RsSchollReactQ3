@@ -1,16 +1,12 @@
-import React, { useState } from 'react'
-import logo from './logo.svg'
+import React from 'react'
 import './App.css'
-import {MainPage} from "./Components/Pages/MainPage";
-import {Articles} from "./Components/Articles/Articles";
+import  {MainRouter} from "./Components/Router/Router";
 
 function App() {
-  const [searchResult, setSearchResult] = useState([])
 
   return (
     <div className="App">
-        <MainPage setSearchResult={setSearchResult} />
-        <Articles searchResult={searchResult} />
+        <MainRouter />
     </div>
   )
 }

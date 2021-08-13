@@ -1,0 +1,7 @@
+.main-router ul {
+    list-style-type: none;
+}
+
+.selected {
+    color: red;
+}

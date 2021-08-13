@@ -1,5 +1,8 @@
-import React, {useState} from "react";
-import "../../Style/articles.css"
+import React from "react";
+import "../../Style/articles.css";
+import {
+    Link,
+} from "react-router-dom";
 
 export const Articles = ({searchResult}) => {
 console.log(searchResult);
@@ -20,9 +23,7 @@ console.log(searchResult);
                         return (
                             <tr key={index}>
                                 <td>
-                                    <a href={item.url}>
-                                        {item.title}
-                                    </a>
+                                    <Link to={`/details/${index}`}>{item.title}</Link>
                                 </td>
                                 <td>{item.author}</td>
                                 <td>{item.publishedAt}</td>
