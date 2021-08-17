@@ -3,9 +3,13 @@ import {axiosInstance} from "../../Services/api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../Style/mainPage.css";
+import { useSelector, useDispatch } from "react-redux";
+import { setList } from "../../app/redux/actions";
 
 export const MainPage = ({setSearchResult}) => {
     const apiKey = '0dce18a8a93245fcae05a3a7149e56e9';
+    const list = useSelector((state) => state.list);
+    const dispatch = useDispatch();
 
     const [searchValue, setSearchValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);

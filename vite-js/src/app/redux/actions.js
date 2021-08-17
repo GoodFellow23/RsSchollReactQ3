@@ -2,6 +2,6 @@ import axios from "axios";
 
 export const LIST = {};
 
-export function addTodo(text) {
+export function setList(text) {
     return {type: LIST, text}
 }
