@@ -19,7 +19,7 @@ export const MainPage = ({setSearchResult}) => {
     const [lang, setLang] = useState('en');
     const [pageSize, setPageSize] = useState('10');
     const [page, setPage] = useState('1');
-    const [currentPage, setCurrentPage] =useState('0');
+    const [currentPage, setCurrentPage] = useState('0');
 
     const handleChange = (event) => {
         setSearchValue(event.target.value);
@@ -33,6 +33,8 @@ export const MainPage = ({setSearchResult}) => {
         );
         const temp = response.data.totalResults / pageSize;
         const count = temp > Math.trunc(temp) ? Math.trunc(temp) + 1 : Math.trunc(temp);
+        dispatch(setList(response.data.articles));
+        console.log()
         setSearchResult(response.data.articles);
         setCurrentPage(count);
         setIsLoading(false);
