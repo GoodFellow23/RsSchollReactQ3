@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import "../../Style/articles.css"
+import React, { useState } from 'react';
+import '../../Style/articles.css';
+import uniqid from 'uniqid';
 
-export const Articles = ({searchResult}) => {
-console.log(searchResult);
+export const Articles = ({ searchResult }) => {
     return (
         <div className="result-wrapper">
             <table className="result-list">
@@ -16,18 +16,22 @@ console.log(searchResult);
                     </tr>
                 </thead>
                 <tbody>
-                    {searchResult.map((item, index) => {
+                    {searchResult.map((item) => {
                         return (
-                            <tr key={index}>
+                            <tr key={uniqid()}>
                                 <td>
-                                    <a href={item.url}>
-                                        {item.title}
-                                    </a>
+                                    <a href={item.url}>{item.title}</a>
                                 </td>
                                 <td>{item.author}</td>
                                 <td>{item.publishedAt}</td>
                                 <td>{item.description}</td>
-                                <td><img src={item.urlToImage} alt={item.title} width="350" /></td>
+                                <td>
+                                    <img
+                                        src={item.urlToImage}
+                                        alt={item.title}
+                                        width="350"
+                                    />
+                                </td>
                             </tr>
                         )
                     })}

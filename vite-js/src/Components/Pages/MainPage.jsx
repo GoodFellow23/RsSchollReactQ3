@@ -1,11 +1,12 @@
-import React, {useState} from "react";
-import {axiosInstance} from "../../Services/api";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "../../Style/mainPage.css";
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../../Style/mainPage.css';
+import { Api } from '../../Api/api';
+import { API_KEY } from "../../../constants";
 
-export const MainPage = ({setSearchResult}) => {
-    const apiKey = '0dce18a8a93245fcae05a3a7149e56e9';
+export const MainPage = ({ setSearchResult }) => {
+    const apiKey = API_KEY;
 
     const [searchValue, setSearchValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -15,18 +16,16 @@ export const MainPage = ({setSearchResult}) => {
     const [lang, setLang] = useState('en');
     const [pageSize, setPageSize] = useState('10');
     const [page, setPage] = useState('1');
-    const [currentPage, setCurrentPage] =useState('0');
+    const [currentPage, setCurrentPage] = useState('0');
 
-    const handleChange = (event) => {
-        setSearchValue(event.target.value);
+    const handleChange = (set) => (event) => {
+        set(event.target.value);
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true);
-        const response = await axiosInstance.get(
-            `v2/everything?q=${searchValue}&apiKey=${apiKey}&from=${startDate}&to=${endDate}&sortBy=${sortBy}&language=${lang}&pageSize=${pageSize}&page=${page}`
-        );
+        const response = await Api(searchValue, apiKey, startDate, endDate, sortBy, lang, pageSize, page);
         const temp = response.data.totalResults / pageSize;
         const count = temp > Math.trunc(temp) ? Math.trunc(temp) + 1 : Math.trunc(temp);
         setSearchResult(response.data.articles);
@@ -43,7 +42,7 @@ export const MainPage = ({setSearchResult}) => {
                         name="search"
                         type="text"
                         value={searchValue}
-                        onChange={handleChange}
+                        onChange={handleChange(setSearchValue)}
                         disabled={isLoading}
                     />
                 </label>
@@ -51,60 +50,57 @@ export const MainPage = ({setSearchResult}) => {
                     {isLoading ? 'Loading...' : 'Search'}
                 </button>
                 <div className="sort-string">
-                    <label className="sortBy" htmlFor={sortBy}>
-                         <p>
-                             Sort:
-                         </p>
+                    <label className="sortBy" htmlFor="sortBy">
+                        <p>Sort:</p>
                         <select
                             className="sortBy"
                             name="sortBy"
                             value={sortBy}
-                            onChange={(event) => setSortBy(event.target.value)}
+                            onChange={handleChange(setSortBy)}
                         >
                             <option>publishedAt</option>
                             <option>relevancy</option>
                             <option>popularity</option>
                         </select>
                     </label>
-                    <label className="sortBy" htmlFor={lang}>
-                        <p>
-                            lang:
-                        </p>
+                    <label className="sortBy" htmlFor="lang">
+                        <p>lang:</p>
                         <select
                             className="lang"
                             name="lang"
                             value={lang}
-                            onChange={(event) => setLang(event.target.value)}
+                            onChange={handleChange(setLang)}
                         >
                             <option value="en">English</option>
-                            <option value="en">Russia</option>
+                            <option value="ru">Russia</option>
                             <option value="fr">France</option>
                         </select>
                     </label>
                     <label className="item" htmlFor="startDate">
-                        <p>
-                            Start:
-                        </p>
-                        <DatePicker name="startDate" selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" />
+                        <p>Start:</p>
+                        <DatePicker
+                            name="startDate"
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            dateFormat="yyyy-MM-dd"
+                        />
                     </label>
                     <label className="item" htmlFor="endDate">
-                        <p>
-                            End:
-                        </p>
-                        <DatePicker name="endDate" selected={endDate} onChange={(date) => setEndDate(date)} dateFormat="yyyy-MM-dd" />
+                        <p>End:</p>
+                        <DatePicker
+                            name="endDate"
+                            selected={endDate}
+                            onChange={(date) => setEndDate(date)}
+                            dateFormat="yyyy-MM-dd"
+                        />
                     </label>
                     <label className="sortBy" htmlFor="pageSize">
-                        <p>
-                            Size:
-                        </p>
+                        <p>Size:</p>
                         <select
                             className="pageSize"
                             name="pageSize"
                             value={pageSize}
-                            onChange={(event) => {
-                                setPageSize(event.target.value);
-                                setPage('1');
-                            }}
+                            onChange={handleChange(setPageSize)}
                         >
                             <option>5</option>
                             <option>10</option>
@@ -114,14 +110,13 @@ export const MainPage = ({setSearchResult}) => {
                         </select>
                     </label>
                     <label className="sortBy" htmlFor="page">
-                        <p>
-                            Page({currentPage}):
-                        </p>
-                        <input type="number"
+                        <p>Page({currentPage}):</p>
+                        <input
+                            type="number"
                             className="page"
                             name="page"
                             value={page}
-                            onChange={(event) => setPage(event.target.value)}
+                            onChange={handleChange(setPage)}
                         />
                     </label>
                 </div>

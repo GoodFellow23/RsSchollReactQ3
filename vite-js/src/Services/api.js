@@ -1,6 +1,7 @@
-import axios from "axios"
+import axios from 'axios';
+import { TIME_OUT } from "../../constants";
 
 export const axiosInstance = axios.create({
     baseURL: 'https://newsapi.org/',
-    timeout: 5000,
-});
+    timeout: TIME_OUT,
+})
