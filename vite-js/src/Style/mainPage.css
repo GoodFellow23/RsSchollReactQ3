@@ -1,0 +1,12 @@
+.sort-string {
+    display: flex;
+    justify-content: center;
+}
+
+.sort-string label {
+    margin: 0 5px;
+}
+
+.sort-string label p {
+    margin: 15px 0 0;
+}

@@ -1,0 +1,14 @@
+.result-wrapper .result-list {
+    width: 100%;
+    border-spacing: unset;
+    margin-top: 20px;
+}
+
+td {
+    border: 1px solid black;
+}
+
+thead {
+    background: #499cba;
+    color: antiquewhite;
+}
