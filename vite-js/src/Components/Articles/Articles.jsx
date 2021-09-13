@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 
 export const Articles = ({searchResult}) => {
-console.log(searchResult);
     return (
         <div className="result-wrapper">
             <table className="result-list">
