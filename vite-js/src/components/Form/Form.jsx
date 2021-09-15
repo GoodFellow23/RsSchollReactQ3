@@ -1,0 +1,159 @@
+import { useEffect, useState } from "react";
+import "../../css/From/from.css";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+
+export const Form = ({ setFormValues }) => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [birthDate, setBirthDate] = useState("");
+  const [country, setCountry] = useState("Russia");
+  const [agree, setAgree] = useState(false);
+  const [error, setError] = useState({});
+  const [switcher, setSwitcher] = useState(false);
+
+  useEffect(() => {
+    validate();
+  }, [agree, firstName, lastName, birthDate, switcher]);
+
+  const reset = () => {
+    setFirstName("");
+    setLastName("");
+    setBirthDate("");
+    setCountry("Russia");
+    setAgree(false);
+    setError({});
+  };
+
+  const validate = () => {
+    setError({});
+    if (!agree) {
+      setError((state) => ({ ...state, agree }));
+    }
+    if (!firstName) {
+      setError((state) => ({ ...state, firstName }));
+    }
+    if (!lastName) {
+      setError((state) => ({ ...state, lastName }));
+    }
+    if (!birthDate) {
+      setError((state) => ({ ...state, birthDate }));
+    }
+    if (switcher === false) {
+      setError((state) => ({ ...state, switcher }));
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (Object.keys(error).length === 0) {
+      setFormValues((state) => [
+        ...state,
+        { firstName, lastName, birthDate, country, agree, switcher },
+      ]);
+      reset();
+    }
+  };
+
+  const handleChange = (set) => (event) => {
+      set(event.target.value);
+  };
+
+  const handleSwitch = (set) => {
+      set((prev) => !prev);
+  };
+
+  return (
+    <form className="form" onSubmit={handleSubmit}>
+      <label className="item" htmlFor={firstName}>
+        <p>
+          Name:
+          {error?.firstName && (
+            <span className="errors"> Should be fill</span>
+          )}
+        </p>
+        <input
+          type="text"
+          name={firstName}
+          value={firstName}
+          onChange={handleChange(setFirstName)}
+        />
+      </label>
+      <label className="item" htmlFor={lastName}>
+        <p>
+          Surname:
+          {error?.lastName && (
+            <span className="errors"> Should be fill</span>
+          )}
+        </p>
+        <input
+          type="text"
+          name={lastName}
+          value={lastName}
+          onChange={handleChange(setLastName)}
+        />
+      </label>
+      <label className="item" htmlFor={birthDate}>
+        <p>
+          Birth date:
+          {error?.birthDate && (
+            <span className="errors"> Should be fill</span>
+          )}
+        </p>
+        <input
+          type="date"
+          name={birthDate}
+          value={birthDate}
+          onChange={handleChange(setBirthDate)}
+        />
+      </label>
+      <label className="country" htmlFor={country}>
+        Country:
+        <select
+          className="country"
+          name="country"
+          value={country}
+          onChange={handleChange(setCountry)}
+        >
+          <option>Russia</option>
+          <option>Belarus</option>
+          <option>Ukraine</option>
+        </select>
+      </label>
+      <label className="agree" htmlFor="agree">
+        <p>
+          Agree:{" "}
+          {error?.agree && (
+            <span className="errors">Should be check</span>
+          )}
+        </p>
+        <input
+          type="checkbox"
+          name="agree"
+          checked={agree}
+          onChange={handleSwitch(setAgree)}
+        />
+      </label>
+      <label htmlFor="switcher">
+        <p>
+          Send Mail:{" "}
+          {error?.switcher && (
+            <span className="errors">Should be check</span>
+          )}
+        </p>
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              onChange={handleSwitch(setSwitcher)}
+              name="switcher"
+            />
+          }
+        />
+      </label>
+      <div className="button">
+        <input type="submit" value="Send" />
+      </div>
+    </form>
+  );
+};
