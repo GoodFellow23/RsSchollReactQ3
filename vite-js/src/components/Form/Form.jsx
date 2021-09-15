@@ -30,13 +30,13 @@ export const Form = ({ setFormValues }) => {
     if (!agree) {
       setError((state) => ({ ...state, agree }));
     }
-    if (firstName === "") {
+    if (!firstName) {
       setError((state) => ({ ...state, firstName }));
     }
-    if (lastName === "") {
+    if (!lastName) {
       setError((state) => ({ ...state, lastName }));
     }
-    if (birthDate === "") {
+    if (!birthDate) {
       setError((state) => ({ ...state, birthDate }));
     }
     if (switcher === false) {
@@ -55,12 +55,20 @@ export const Form = ({ setFormValues }) => {
     }
   };
 
+  const handleChange = (set) => (event) => {
+      set(event.target.value);
+  };
+
+  const handleSwitch = (set) => {
+      set((prev) => !prev);
+  };
+
   return (
     <form className="form" onSubmit={handleSubmit}>
       <label className="item" htmlFor={firstName}>
         <p>
           Name:
-          {error?.firstName !== undefined && (
+          {error?.firstName && (
             <span className="errors"> Should be fill</span>
           )}
         </p>
@@ -68,13 +76,13 @@ export const Form = ({ setFormValues }) => {
           type="text"
           name={firstName}
           value={firstName}
-          onChange={(event) => setFirstName(event.target.value)}
+          onChange={handleChange(setFirstName)}
         />
       </label>
       <label className="item" htmlFor={lastName}>
         <p>
           Surname:
-          {error?.lastName !== undefined && (
+          {error?.lastName && (
             <span className="errors"> Should be fill</span>
           )}
         </p>
@@ -82,13 +90,13 @@ export const Form = ({ setFormValues }) => {
           type="text"
           name={lastName}
           value={lastName}
-          onChange={(event) => setLastName(event.target.value)}
+          onChange={handleChange(setLastName)}
         />
       </label>
       <label className="item" htmlFor={birthDate}>
         <p>
           Birth date:
-          {error?.birthDate !== undefined && (
+          {error?.birthDate && (
             <span className="errors"> Should be fill</span>
           )}
         </p>
@@ -96,7 +104,7 @@ export const Form = ({ setFormValues }) => {
           type="date"
           name={birthDate}
           value={birthDate}
-          onChange={(event) => setBirthDate(event.target.value)}
+          onChange={handleChange(setBirthDate)}
         />
       </label>
       <label className="country" htmlFor={country}>
@@ -105,7 +113,7 @@ export const Form = ({ setFormValues }) => {
           className="country"
           name="country"
           value={country}
-          onChange={(event) => setCountry(event.target.value)}
+          onChange={handleChange(setCountry)}
         >
           <option>Russia</option>
           <option>Belarus</option>
@@ -115,7 +123,7 @@ export const Form = ({ setFormValues }) => {
       <label className="agree" htmlFor="agree">
         <p>
           Agree:{" "}
-          {error?.agree !== undefined && (
+          {error?.agree && (
             <span className="errors">Should be check</span>
           )}
         </p>
@@ -123,13 +131,13 @@ export const Form = ({ setFormValues }) => {
           type="checkbox"
           name="agree"
           checked={agree}
-          onChange={() => setAgree((prev) => !prev)}
+          onChange={handleSwitch(setAgree)}
         />
       </label>
       <label htmlFor="switcher">
         <p>
           Send Mail:{" "}
-          {error?.switcher !== undefined && (
+          {error?.switcher && (
             <span className="errors">Should be check</span>
           )}
         </p>
@@ -137,9 +145,7 @@ export const Form = ({ setFormValues }) => {
           control={
             <Switch
               color="primary"
-              onChange={() => {
-                setSwitcher((prev) => !prev);
-              }}
+              onChange={handleSwitch(setSwitcher)}
               name="switcher"
             />
           }
